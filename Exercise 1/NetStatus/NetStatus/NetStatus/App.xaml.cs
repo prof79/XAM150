@@ -14,8 +14,9 @@ namespace NetStatus
 		{
 			InitializeComponent();
 
-            MainPage = new NoNetworkPage();
-		}
+            //MainPage = new NoNetworkPage();
+            MainPage = new NetworkViewPage();
+        }
 
 		protected override void OnStart()
 		{
