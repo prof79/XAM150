@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="NetStatus.PluginNotSupported"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Label
+        FontAttributes="Bold"
+        HorizontalTextAlignment="Center"
+        Text="I'm sorry, I do not know how to check network connectivity on your device."
+        TextColor="#808080"
+        VerticalTextAlignment="Center" />
+
+</ContentPage>
