@@ -18,6 +18,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>NetStatus.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>4AB221D864195AB761B6CC06A717CF46C7D2BA81</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -154,6 +155,9 @@
       <Project>{0A4DFA57-D87F-4F6A-A05A-5BC47CD6CCB9}</Project>
       <Name>NetStatus</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NetStatus.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
