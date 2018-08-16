@@ -118,10 +118,15 @@ namespace BookClient.Data
                 await client.PutAsync(updateUrl, content);
         }
 
-        public Task Delete(string isbn)
+        public async Task DeleteAsync(string isbn)
         {
-            // TODO: use DELETE to delete a book
-            throw new NotImplementedException();
+            var deleteUrl = $"{Url}{isbn}";
+
+            var client = await GetClientAsync();
+
+            // TODO: Error handling
+            var deleteResponse =
+                await client.DeleteAsync(deleteUrl);
         }
 
         #endregion
