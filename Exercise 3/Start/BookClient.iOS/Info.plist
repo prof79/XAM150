@@ -50,5 +50,22 @@
     <string>LaunchScreen</string>
     <key>CFBundleShortVersionString</key>
     <string>1.0</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSExceptionDomains</key>
+      <dict>
+        <key>xam150.azurewebsites.net</key>
+        <dict>
+          <key>NSExceptionMinimumTLSVersion</key>
+          <string>TLSv1.0</string>
+          <key>NSExceptionRequiresForwardSecrecy</key>
+          <false />
+          <key>NSExceptionAllowInsecureHTTPLoads</key>
+          <true />
+          <key>NSIncludeSubdomains</key>
+          <true />
+        </dict>
+      </dict>
+    </dict>
   </dict>
 </plist>
