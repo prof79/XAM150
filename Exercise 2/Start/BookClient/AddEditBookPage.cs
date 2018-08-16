@@ -17,7 +17,32 @@ namespace BookClient
         private readonly IList<Book> books;
         private readonly BookManager manager;
 
+        private readonly ActivityIndicator activityIndicator;
+
+        private bool _myIsBusy;
+
         #endregion
+
+        #region Properties
+
+        #endregion
+
+        public bool MyIsBusy
+        {
+            get => _myIsBusy;
+
+            set
+            {
+                if (value != _myIsBusy)
+                {
+                    _myIsBusy = value;
+
+                    activityIndicator.IsRunning
+                        = activityIndicator.IsVisible
+                        = _myIsBusy;
+                }
+            }
+        }
 
         #region Factory Method
 
@@ -61,6 +86,14 @@ namespace BookClient
                 }
             };
 
+            activityIndicator = new ActivityIndicator
+            {
+                IsRunning = false,
+                IsVisible = false,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+            };
+
             var button = new Button
             {
                 BackgroundColor = existingBook != null ? Color.Gray : Color.Green,
@@ -74,7 +107,7 @@ namespace BookClient
             Content = new StackLayout
             {
                 Spacing = 0,
-                Children = { tableView, button },
+                Children = { tableView, activityIndicator, button },
             };
         }
 
@@ -88,7 +121,7 @@ namespace BookClient
 
             button.IsEnabled = false;
 
-            this.IsBusy = true;
+            MyIsBusy = true;
 
             try
             {
@@ -100,7 +133,7 @@ namespace BookClient
                     || String.IsNullOrWhiteSpace(author)
                     || String.IsNullOrWhiteSpace(genre))
                 {
-                    this.IsBusy = false;
+                    MyIsBusy = false;
 
                     await this.DisplayAlert("Missing Information",
                         "You must enter values for the Title, Author, and Genre.",
@@ -134,7 +167,7 @@ namespace BookClient
             }
             finally
             {
-                this.IsBusy = false;
+                MyIsBusy = false;
 
                 button.IsEnabled = true;
             }

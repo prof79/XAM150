@@ -16,6 +16,31 @@ namespace BookClient
         private readonly IList<Book> books = new ObservableCollection<Book>();
         private readonly BookManager manager = new BookManager();
 
+        private bool _myIsBusy = true;
+
+        #endregion
+
+        #region Properties
+
+        public bool MyIsBusy
+        {
+            get => _myIsBusy;
+
+            set
+            {
+                if (value != _myIsBusy)
+                {
+                    _myIsBusy = value;
+
+                    activityIndicator.IsEnabled
+                        = activityIndicator.IsRunning
+                        = activityIndicator.IsVisible
+                        = _myIsBusy;
+                    //IsBusy = value;
+                }
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -32,6 +57,8 @@ namespace BookClient
 
         private async void OnRefresh(object sender, EventArgs e)
         {
+            this.MyIsBusy = true;
+
             var bookCollection = await manager.GetAllAsync();
 
             foreach (Book book in bookCollection)
@@ -39,6 +66,8 @@ namespace BookClient
                 if (books.All(b => b.ISBN != book.ISBN))
                     books.Add(book);
             }
+
+            this.MyIsBusy = false;
         }
 
         private async void OnAddNewBook(object sender, EventArgs e)
@@ -65,9 +94,13 @@ namespace BookClient
                     "Are you sure you want to delete the book '"
                         + book.Title + "'?", "Yes", "Cancel") == true)
                 {
+                    this.MyIsBusy = true;
+
                     await manager.DeleteAsync(book.ISBN);
 
                     books.Remove(book);
+
+                    this.MyIsBusy = false;
                 }
             }
         }

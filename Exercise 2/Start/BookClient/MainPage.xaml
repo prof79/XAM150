@@ -3,6 +3,7 @@
     x:Class="BookClient.MainPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cus="clr-namespace:BookClient.CustomViews"
     Title="Library Books">
 
     <ContentPage.ToolbarItems>
@@ -19,30 +20,70 @@
 
     </ContentPage.ToolbarItems>
 
-    <ListView ItemTapped="OnEditBook" ItemsSource="{Binding}">
+    <Grid>
 
-        <ListView.ItemTemplate>
+        <ListView ItemTapped="OnEditBook" ItemsSource="{Binding}">
 
-            <DataTemplate>
+            <ListView.ItemTemplate>
 
-                <TextCell Detail="{Binding Genre}" Text="{Binding Title}">
+                <DataTemplate>
 
-                    <TextCell.ContextActions>
+                    <TextCell Detail="{Binding Genre}" Text="{Binding Title}">
 
-                        <MenuItem
-                            Clicked="OnDeleteBook"
-                            CommandParameter="{Binding}"
-                            IsDestructive="True"
-                            Text="Delete" />
+                        <TextCell.ContextActions>
 
-                    </TextCell.ContextActions>
+                            <MenuItem
+                                Clicked="OnDeleteBook"
+                                CommandParameter="{Binding}"
+                                IsDestructive="True"
+                                Text="Delete" />
 
-                </TextCell>
+                        </TextCell.ContextActions>
 
-            </DataTemplate>
+                    </TextCell>
 
-        </ListView.ItemTemplate>
+                </DataTemplate>
 
-    </ListView>
+            </ListView.ItemTemplate>
+
+        </ListView>
+
+        <!--
+            "ActivityIndicator" is a mess in Xamarin.Forms 2.5 under UWP:
+            
+            https://github.com/xamarin/Xamarin.Forms/issues/1483
+            https://forums.xamarin.com/discussion/73495/when-isbusy-is-set-on-a-page-how-to-get-uwp-to-show-a-busy-indicator-on-desktop
+        -->
+
+        <cus:CustomActivityIndicator
+            x:Name="activityIndicator"
+            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="CenterAndExpand" />
+
+        <!--<ActivityIndicator
+            x:Name="activityIndicator"
+            AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="CenterAndExpand">
+            <ActivityIndicator.WidthRequest>
+                <OnPlatform
+                    x:TypeArguments="x:Double"
+                    Android="100"
+                    WinPhone="400"
+                    iOS="100" />
+            </ActivityIndicator.WidthRequest>
+            <ActivityIndicator.HeightRequest>
+                <OnPlatform x:TypeArguments="x:Double" WinPhone="50" />
+            </ActivityIndicator.HeightRequest>
+            <ActivityIndicator.Color>
+                <OnPlatform
+                    x:TypeArguments="Color"
+                    WinPhone="#193375"
+                    iOS="#39757F" />
+            </ActivityIndicator.Color>
+        </ActivityIndicator>-->
+
+    </Grid>
 
 </ContentPage>
