@@ -32,7 +32,7 @@ namespace BookClient
 
         private async void OnRefresh(object sender, EventArgs e)
         {
-            var bookCollection = await manager.GetAll();
+            var bookCollection = await manager.GetAllAsync();
 
             foreach (Book book in bookCollection)
             {
