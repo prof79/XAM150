@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BookClient.MainPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cus="clr-namespace:BookClient.CustomViews"
+    Title="Library Books">
+
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem
+            Clicked="OnAddNewBook"
+            Icon="ic_action_new.png"
+            Text="Add New" />
+
+        <ToolbarItem
+            Clicked="OnRefresh"
+            Icon="ic_autorenew.png"
+            Text="Refresh" />
+
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+
+        <ListView ItemTapped="OnEditBook" ItemsSource="{Binding}">
+
+            <ListView.ItemTemplate>
+
+                <DataTemplate>
+
+                    <TextCell Detail="{Binding Genre}" Text="{Binding Title}">
+
+                        <TextCell.ContextActions>
+
+                            <MenuItem
+                                Clicked="OnDeleteBook"
+                                CommandParameter="{Binding}"
+                                IsDestructive="True"
+                                Text="Delete" />
+
+                        </TextCell.ContextActions>
+
+                    </TextCell>
+
+                </DataTemplate>
+
+            </ListView.ItemTemplate>
+
+        </ListView>
+
+        <!--
+            "ActivityIndicator" is a mess in Xamarin.Forms 2.5 under UWP:
+            
+            https://github.com/xamarin/Xamarin.Forms/issues/1483
+            https://forums.xamarin.com/discussion/73495/when-isbusy-is-set-on-a-page-how-to-get-uwp-to-show-a-busy-indicator-on-desktop
+        -->
+
+        <ActivityIndicator
+            x:Name="activityIndicator"
+            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="CenterAndExpand" />
+
+    </Grid>
+
+</ContentPage>

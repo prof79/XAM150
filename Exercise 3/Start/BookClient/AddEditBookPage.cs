@@ -1,0 +1,178 @@
+// AddEditBookPage.cs
+
+namespace BookClient
+{
+    using BookClient.Data;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Xamarin.Forms;
+
+    public class AddEditBookPage : ContentPage
+    {
+        #region Fields
+
+        private readonly Book existingBook;
+        private readonly EntryCell titleCell, genreCell, authorCell;
+        private readonly IList<Book> books;
+        private readonly BookManager manager;
+
+        private readonly ActivityIndicator activityIndicator;
+
+        private bool _myIsBusy;
+
+        #endregion
+
+        #region Properties
+
+        #endregion
+
+        public bool MyIsBusy
+        {
+            get => _myIsBusy;
+
+            set
+            {
+                if (value != _myIsBusy)
+                {
+                    _myIsBusy = value;
+
+                    activityIndicator.IsRunning
+                        = activityIndicator.IsVisible
+                        = _myIsBusy;
+                }
+            }
+        }
+
+        #region Factory Method
+
+        public AddEditBookPage(BookManager manager, IList<Book> books, Book existingBook = null)
+        {
+            this.manager = manager;
+            this.books = books;
+            this.existingBook = existingBook;
+
+            var tableView = new TableView
+            {
+                Intent = TableIntent.Form,
+                Root = new TableRoot(existingBook != null ? "Edit Book" : "New Book")
+                {
+                    new TableSection("Details")
+                    {
+                        new TextCell
+                        {
+                            Text = "ISBN",
+                            Detail = (existingBook != null) ? existingBook.ISBN : "Will be generated"
+                        },
+                        (titleCell = new EntryCell
+                        {
+                            Label = "Title",
+                            Placeholder = "add title",
+                            Text = (existingBook != null) ? existingBook.Title : null,
+                        }),
+                        (genreCell = new EntryCell
+                        {
+                            Label = "Genre",
+                            Placeholder = "add genre",
+                            Text = (existingBook != null) ? existingBook.Genre : null,
+                        }),
+                        (authorCell = new EntryCell
+                        {
+                            Label = "Author",
+                            Placeholder = "add author",
+                            Text = (existingBook != null) ? existingBook.Authors.FirstOrDefault() : null,
+                        }),
+                    },
+                }
+            };
+
+            activityIndicator = new ActivityIndicator
+            {
+                IsRunning = false,
+                IsVisible = false,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+            };
+
+            var button = new Button
+            {
+                BackgroundColor = existingBook != null ? Color.Gray : Color.Green,
+                TextColor = Color.White,
+                Text = existingBook != null ? "Finished" : "Add Book",
+                CornerRadius = 0,
+            };
+
+            button.Clicked += OnDismiss;
+
+            Content = new StackLayout
+            {
+                Spacing = 0,
+                Children = { tableView, activityIndicator, button },
+            };
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        private async void OnDismiss(object sender, EventArgs e)
+        {
+            var button = (Button) sender;
+
+            button.IsEnabled = false;
+
+            MyIsBusy = true;
+
+            try
+            {
+                var title = titleCell.Text;
+                var author = authorCell.Text;
+                var genre = genreCell.Text;
+
+                if (String.IsNullOrWhiteSpace(title)
+                    || String.IsNullOrWhiteSpace(author)
+                    || String.IsNullOrWhiteSpace(genre))
+                {
+                    MyIsBusy = false;
+
+                    await this.DisplayAlert("Missing Information",
+                        "You must enter values for the Title, Author, and Genre.",
+                        "OK");
+                }
+                else
+                {
+                    if (existingBook != null)
+                    {
+                        existingBook.Title = title;
+                        existingBook.Genre = genre;
+                        existingBook.Authors[0] = author;
+
+                        await manager.UpdateAsync(existingBook);
+
+                        int pos = books.IndexOf(existingBook);
+
+                        books.RemoveAt(pos);
+
+                        books.Insert(pos, existingBook);
+                    }
+                    else
+                    {
+                        var book = await manager.AddAsync(title, author, genre);
+
+                        books.Add(book);
+                    }
+
+                    await Navigation.PopModalAsync();
+                }
+            }
+            finally
+            {
+                MyIsBusy = false;
+
+                button.IsEnabled = true;
+            }
+        }
+
+        #endregion
+    }
+}
