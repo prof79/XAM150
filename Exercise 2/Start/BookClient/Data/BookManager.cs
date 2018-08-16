@@ -6,6 +6,7 @@ namespace BookClient.Data
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Text;
     using System.Threading.Tasks;
     using Newtonsoft.Json;
 
@@ -15,6 +16,9 @@ namespace BookClient.Data
 
         private const string Url =
             "http://xam150.azurewebsites.net/api/books/";
+
+        private const string JsonMime =
+            "application/json";
 
         private string _authorizationKey;
 
@@ -40,7 +44,7 @@ namespace BookClient.Data
             }
 
             var mediaType =
-                new MediaTypeWithQualityHeaderValue("application/json");
+                new MediaTypeWithQualityHeaderValue(JsonMime);
 
             client
                 .DefaultRequestHeaders
@@ -66,10 +70,35 @@ namespace BookClient.Data
                     .DeserializeObject<IEnumerable<Book>>(booksJson);
         }
 
-        public Task<Book> Add(string title, string author, string genre)
+        public async Task<Book> AddAsync(string title, string author, string genre)
         {
-            // TODO: use POST to add a book
-            throw new NotImplementedException();
+            var book = new Book
+            {
+                ISBN = String.Empty,
+                Title = title,
+                Authors = new List<string> { { author } },
+                Genre = genre,
+                PublishDate = DateTime.Now
+            };
+
+            var jsonBook =
+                JsonConvert.SerializeObject(book);
+
+            var client = await GetClientAsync();
+
+            var content =
+                new StringContent(jsonBook, Encoding.UTF8, JsonMime);
+
+            // TODO: Error handling
+            var postResponse =
+                await client.PostAsync(Url, content);
+
+            // TODO: Error handling
+            var bookResponseJson = await
+                postResponse.Content.ReadAsStringAsync();
+
+            return
+                JsonConvert.DeserializeObject<Book>(bookResponseJson);
         }
 
         public Task Update(Book book)

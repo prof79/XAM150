@@ -124,7 +124,7 @@ namespace BookClient
                     }
                     else
                     {
-                        var book = await manager.Add(title, author, genre);
+                        var book = await manager.AddAsync(title, author, genre);
 
                         books.Add(book);
                     }
