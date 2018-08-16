@@ -1,25 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="BookClient.MainPage"
-             Title="Library Books">
-  <ContentPage.ToolbarItems>
-    <ToolbarItem Text="Add New" Icon="ic_action_new.png" Clicked="OnAddNewBook" />
-    <ToolbarItem Text="Refresh" Icon="ic_autorenew.png" Clicked="OnRefresh" />
-  </ContentPage.ToolbarItems>
+<ContentPage
+    x:Class="BookClient.MainPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Library Books">
 
-  <ListView ItemsSource="{Binding}"
-          ItemTapped="OnEditBook">
-    <ListView.ItemTemplate>
-      <DataTemplate>
-        <TextCell Text="{Binding Title}" Detail="{Binding Genre}">
-          <TextCell.ContextActions>
-            <MenuItem Clicked="OnDeleteBook"
-                CommandParameter="{Binding}"
-                Text="Delete" IsDestructive="True" />
-          </TextCell.ContextActions>
-        </TextCell>
-      </DataTemplate>
-    </ListView.ItemTemplate>
-  </ListView>
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem
+            Clicked="OnAddNewBook"
+            Icon="ic_action_new.png"
+            Text="Add New" />
+
+        <ToolbarItem
+            Clicked="OnRefresh"
+            Icon="ic_autorenew.png"
+            Text="Refresh" />
+
+    </ContentPage.ToolbarItems>
+
+    <ListView ItemTapped="OnEditBook" ItemsSource="{Binding}">
+
+        <ListView.ItemTemplate>
+
+            <DataTemplate>
+
+                <TextCell Detail="{Binding Genre}" Text="{Binding Title}">
+
+                    <TextCell.ContextActions>
+
+                        <MenuItem
+                            Clicked="OnDeleteBook"
+                            CommandParameter="{Binding}"
+                            IsDestructive="True"
+                            Text="Delete" />
+
+                    </TextCell.ContextActions>
+
+                </TextCell>
+
+            </DataTemplate>
+
+        </ListView.ItemTemplate>
+
+    </ListView>
+
 </ContentPage>

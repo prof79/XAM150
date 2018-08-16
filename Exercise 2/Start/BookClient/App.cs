@@ -1,21 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// App.cs
 
-using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
 namespace BookClient
 {
-	public class App : Application
+    using Xamarin.Forms;
+
+    public class App : Application
 	{
-		public App()
+        #region Constructor
+
+        public App()
 		{
 			// The root page of your application
             MainPage = new NavigationPage(new MainPage());
 		}
 
-		protected override void OnStart()
+        #endregion
+
+        #region Application Lifecycle
+
+        protected override void OnStart()
 		{
 			// Handle when your app starts
 		}
@@ -29,5 +36,7 @@ namespace BookClient
 		{
 			// Handle when your app resumes
 		}
-	}
+
+        #endregion
+    }
 }

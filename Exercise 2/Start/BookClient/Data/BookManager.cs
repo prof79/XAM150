@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿// BookManager.cs
 
 namespace BookClient.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public class BookManager
     {
         public Task<IEnumerable<Book>> GetAll()
@@ -32,4 +33,3 @@ namespace BookClient.Data
         }
     }
 }
-

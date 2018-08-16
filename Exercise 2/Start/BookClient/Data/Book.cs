@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Book.cs
 
 namespace BookClient.Data
 {
+    using System;
+    using System.Collections.Generic;
+
     public class Book
     {
         public string ISBN { get; set; }
@@ -12,4 +14,3 @@ namespace BookClient.Data
         public string Genre { get; set; }
     }
 }
-
