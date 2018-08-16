@@ -114,7 +114,7 @@ namespace BookClient
                         existingBook.Genre = genre;
                         existingBook.Authors[0] = author;
 
-                        await manager.Update(existingBook);
+                        await manager.UpdateAsync(existingBook);
 
                         int pos = books.IndexOf(existingBook);
 
